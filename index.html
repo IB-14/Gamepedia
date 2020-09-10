@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+
+    <link type="stylesheet" href="./assets/index.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/blog/">
+
+    <!-- Custom styles for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
+
+    <title>CRUD with Firebase</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/docs/4.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    
+    <!-- Firebase links -->
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-firestore.js"></script>
+
+
+
+
+</head>
+
+<body>
+
+    <div class="container">
+  <header class="blog-header py-3" style="padding-bottom: 1.5rem!important;">
+    <div class="row flex-nowrap justify-content-between align-items-center">
+      <div class="col-4 pt-1">
+        <h1 class="display-4" style="font-family: 'Neucha', cursive; color: black; size: 5em !important; margin-left: 5px;" href="#">Gamepedia!</h1>
+      </div>
+      <div class="logged-out col-4 justify-content-end align-items-center">
+        <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#Modal-signup" style="float: right;">Sign up</button>
+        <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#Modal-login" style="float: right; margin-right: 20px !important;">Log in</button>
+      </div>
+      <div class="logged-in col-4 justify-content-end align-items-center">
+        <a class="btn btn-sm btn-outline-secondary" id="signout" href="#" style="float: right;">Sign out</a>
+      </div>
+    </div>
+  </header>
+
+  
+
+
+  <div class="modal fade" id="Modal-signup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Sign up</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="form-signup">
+                  
+            <div class="form-label-group">
+              <input type="email" id="signup-email" class="form-control" placeholder="Email address" required="" autofocus="" style="margin-bottom: 15px; border-top: none; border-left: none; border-right: none;">
+            </div>
+      
+            <div class="form-label-group">
+              <input type="password" id="signup-password" class="form-control" placeholder="Password" required="" style="border-top: none; border-left: none; border-right: none;">
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" style="margin-top: 15px;">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="modal fade" id="Modal-login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Log in</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="form-login">
+                  
+            <div class="form-label-group">
+              <input type="email" id="login-email" class="form-control" placeholder="Email address" required="" autofocus="" style="margin-bottom: 15px; border-top: none; border-left: none; border-right: none;">
+            </div>
+      
+            <div class="form-label-group">
+              <input type="password" id="login-password" class="form-control" placeholder="Password" required="" style="border-top: none; border-left: none; border-right: none;">
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" style="margin-top: 15px;">Submit</button>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="entryz">
+    <div>
+        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-success"><h6>Enter Game's details</h3></strong>
+            <form id="add-game">
+              <input id='post-title' name="category" placeholder="Game's Category" style="border-radius: 5px; width: 80%; padding: 7px; border-width: 1px;">
+              <input id='post-title' name="name" placeholder="Game's Name" style="border-radius: 5px; width: 80%; padding: 7px; border-width: 1px; margin-top: 15px;">
+              <input id='post-title' name="about" placeholder="About Game" style="border-radius: 5px; width: 80%; height: 150px; padding: 0 7px 110px; margin-top: 15px; border-width: 1px;">
+              <div class="col-11 d-flex justify-content-end align-items-center" style="margin-top: 15px;">
+                  <button class="btn btn-sm btn-outline-secondary" href="#">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div id="Blogz">
+  </div>
+
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDUPF0gymlPa-iIOYIHoYdlgGoEh2Et1ms",
+    authDomain: "fir-tut-gamepedia.firebaseapp.com",
+    databaseURL: "https://fir-tut-gamepedia.firebaseio.com",
+    projectId: "fir-tut-gamepedia",
+    storageBucket: "fir-tut-gamepedia.appspot.com",
+    messagingSenderId: "576313042143",
+    appId: "1:576313042143:web:6c2be4d2551bbba38db56a"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  // db.settings({timestampsInSnapshots: true});
+</script>
+
+<script src="./assets/app.js"></script>
+<script src="./assets/auth.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+<!-- <meta http-equiv="refresh" content="1"> -->
+
+</body>
+
+</html>
